@@ -1,0 +1,9 @@
+# train and val data 
+train: ./../Dataset/BCCD/ModelData/images/train/
+val: ./../Dataset/BCCD/ModelData/images/val/
+
+# number of classes
+nc: 3
+
+# class names
+names: ['RBC', 'WBC', 'Platelet']

@@ -2,8 +2,9 @@ import pandas as pd
 from sklearn import model_selection
 import numpy as np
 import os
+import shutil
 
-def create_txts(df, path):
+def create_txts(df, image_original_path, image_train_path, label_path):
 
     filenames = []
     for filename in df.file_name:
@@ -15,10 +16,10 @@ def create_txts(df, path):
         for _, row in df[df.file_name == unique].iterrows():
             yolo_input.append([row.label, row.x_center_norm, row.y_center_norm, row.width_norm, row.height_norm])
             yolo_input_to_txt = np.array(yolo_input)
-            
-            name_txt = os.path.join(path, str(row.file_name.split('.')[0] + ".txt"))
+            name_txt = os.path.join(label_path, str(row.file_name.split('.')[0] + ".txt"))
 
             np.savetxt(name_txt, yolo_input_to_txt, fmt=["%d", "%f", "%f", "%f", "%f"])
+            shutil.copyfile(os.path.join(image_original_path, row.file_name), os.path.join(image_train_path, row.file_name))
 
 
 def preprocessing():
@@ -28,11 +29,17 @@ def preprocessing():
     print('Shape train: {}'.format(df_train.shape))
     print('Shape valid: {}'.format(df_valid.shape))
 
-    path_train = './../Dataset/BCCD/test/train'
-    path_valid = './../Dataset/BCCD/test/valid'
+    image_original_path = './../Dataset/BCCD/JPEGImages'
 
-    create_txts(df_train, path_train)
-    create_txts(df_valid, path_valid)
+    image_train_path = './../Dataset/BCCD/ModelData/images/train'
+    image_val_path = './../Dataset/BCCD/ModelData/images/val'
+
+    labels_train_path = './../Dataset/BCCD/ModelData/labels/train'
+    labels_val_path = './../Dataset/BCCD/ModelData/labels/val'
+    
+
+    create_txts(df_train, image_original_path, image_train_path, labels_train_path)
+    create_txts(df_valid, image_original_path, image_val_path, labels_val_path)
 
     
 
