@@ -1,0 +1,4 @@
+type_q: static
+logdir: runs/exp7_FINAL
+cfg: ./../Dataset/bloodData.yaml
+hyp: ./../yolo-v5/data/hyp.scratch.yaml

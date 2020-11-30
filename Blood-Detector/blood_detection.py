@@ -1,12 +1,12 @@
 import os
 
-def detection(path_file):
+def detection(file_name):
 
     # correction in the line 53 in export.py from original repo
-    #path_file = './inference/input/test.py'
 
-    #os.system('python ./../yolov5/detect.py --source ./inference/input/{} --weights ./runs/FINAL/weights/jit_512_640.pt --device cpu'.format(path_file))
-    print("ha llegado a blood_detection")
+    return os.system('python ./../../YOLOv5/detect.py --source ./static/inference/input/{} --output \
+                   ./static/inference/output/ --weights \
+                   ./../runs/FINAL/weights/best.pt --device  cpu'.format(file_name))
 
 if __name__ == '__main__':
     detection()

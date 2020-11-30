@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENIGMA PROJECT</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel = "icon" href = "{{url_for('static', filename='images/hero/logo.png')}}"> 
+</head>
+<body>
+   
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ENIGMA PROJECT</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    </head>
+    <body>
+       
+    <!-- Inicio de cabecera  -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="logoe">
+                    <img src="{{url_for('static', filename='images/hero/logo.png')}}" alt="Responsive image">
+                </div>
+
+                <div class="brand-name">
+                    <a href="">ENIGMA A.I.</a>
+                </div>
+                
+                <div class="ham-burger">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <div class="navbar">
+                    <ul>
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#about">Model</a></li>
+                        <li><a href="#blog">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Fin de cabecera -->
+    
+    <!-- Inicio de Home  -->
+    <section class="home" id="home">
+        <div class="container"></div>
+        <div class="row full-screen">
+            <div class="home-content">
+                <div class="block">
+                    <div class="row">
+                        <div class="section-title">
+                            <h1 class="">BLOOD DETECTOR</h1>
+                        </div>
+                    </div>
+                    <h6>
+                        Currently, many rural areas of Peru still do not have a specialized medical center to perform different blood tests. Many of the equipment necessary for this purpose require a high economic investment and qualified personnel. This work proposes a fast and inexpensive system for the recognition of 3 types of blood cells based on convolutional networks.
+                    </h6>
+                     <!--<h3>A.I. Researcher</h3>-->
+                    <div class="cv-btn">
+                        <a href="https://github.com/Enigma-A-I/RasPi-BloodView" class="git">Github</a>
+                        <a href="" class="paper">Paper</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Fin de Home  -->
+    
+    <!--Inicio About  -->
+    <section class="about-me" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="section-title">
+                    <h1 class="">Run Model</h1>
+                    <div class="description-model">
+                        <h6>
+                            The base model is <span>YOLOv5</span> built on Pytorch, running on a <span>RaspBerry Pi 4</span>.
+                        </h6>
+                    </div>
+                    <div class="process">
+                        <div class="input">
+                            <form method="POST" enctype="multipart/form-data">
+                                <p class="small text-uppercase">  
+                                    Upload an image or video:
+                                </p>
+                                <!---esta parte selecciona y sube el archivo -->
+                                <input type="file" name="ourfile" id="file-input" onchange="form.submit()">  
+                                <label for="file-input" class="cv-btn" >Upload</label>    
+                            </form>
+                        </div>
+                        <div class="output">
+                            <form method="POST">
+                                <p class="small text-uppercase">  
+                                        Make inference:
+                                </p>
+                                <input type="submit" name="predictRequest" id="predict">
+                                <label for="predict" class="cv-btn">Predict</label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="about-content">
+                    <div class="row">
+                        <div class="input-model">
+                            {% if context %}
+
+                                {% if context["boolImage"] == True %}
+                                <div class="div-file-input">
+                                    <img src="{{ url_for('static', filename= 'inference/input/' ~ context["mediaFileName"]) }}" alt=""/>
+                                </div>
+                                {% endif %}
+
+                                {% if context["boolVideo"] == True %}
+                                <div class="div-file-input">
+                                    <video width="520" height="380" controls autoplay id="myVideoI">
+                                        <source src="{{ url_for('static', filename= 'inference/input/' ~ context["mediaFileName"]) }}" type="video/mp4">
+                                    </video>
+                                </div>
+                                {% endif %}
+                                <span>
+                                {% if context["mediaFileName"] %}
+                                    <div class="inputName">
+                                        <strong>Chosen file:</strong>
+                                        <p id = "file-name">{{context["mediaFileName"]}}</p>
+                                    </div>
+                                {% else %}
+                                    <p class="formats">Valid formats: "mp4", "jpg", "png", "jpeg" </p>
+                                {% endif %}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="output-model">
+                            {% if context["finished"] == True  %}
+
+                                {% if context["boolImage"] == True %}
+                                <div class="div-file-output">
+                                    <img src="{{ url_for('static', filename= 'inference/output/' ~ context["mediaFileName"]) }}" alt=""/>
+                                </div>
+                                {% endif %}
+
+                                {% if context["boolVideo"] == True %}
+                                <div class="div-file-output">
+                                    <video width="520" height="380" controls autoplay id="myVideoO">
+                                        <source src="{{ url_for('static', filename= 'inference/output/' ~ context["mediaFileName"]) }}" type="video/mp4">
+                                    </video>
+                                </div>
+                                {% endif %}
+                                <span>
+                                {% if context["time"] %}
+                                    <div class="outputName">
+                                        <strong>Time inference:</strong>
+                                        <p>{{context["time"]}} seconds</p>
+                                    </div>
+                                {% endif %}
+                                </span>
+                            {% else %}
+                            <div class="outputName">
+                                <p style="padding-left: 200px;">Wait Please</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </section>
+    <!--Fin About  -->
+    
+    <!--Inicio de Habilidades-->
+    <section class="skills">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="skills-content">
+                    <div class="row">
+                        <div class="section-title">
+                           <h1 class="">ABOUT THE DEPLOYMENT</h1> 
+                           <p>In the deployment of the model not only use YOLOv5, we used other tools, as shown below.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="skill-box">
+                            <h6 class="">Pytorch</h6>
+                            <div class="skill-bar">
+                                <div class="skill-bar-in" style="width:70%">
+                                    <span>
+                                        70%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <h6 class="">OpenCV</h6>
+                            <div class="skill-bar">
+                                <div class="skill-bar-in" style="width:50%">
+                                    <span>
+                                        50%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <h6 class="">Flask</h6>
+                            <div class="skill-bar">
+                                <div class="skill-bar-in" style="width:65%">
+                                    <span>
+                                        65%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <h6 class="">Tensorboad</h6>
+                            <div class="skill-bar">
+                            <div class="skill-bar-in" style="width:30%">
+                                    <span>
+                                        30%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skill-box">
+                            <h6 class="">Streamlit</h6>
+                            <div class="skill-bar">
+                                <div class="skill-bar-in" style="width:25%">
+                                    <span>
+                                        25%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="img">
+                    <img src="{{url_for('static', filename='images/skill.jpg')}}" alt="skill">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Fin de Habilidades-->
+    
+    
+    <!--Inicio texto del mensaje-->
+    <section class="message-text">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="text">
+                    <h2>If you are passionate about Artificial Intelligence, and you plan to give your best in future projects, contact us.</h2>
+                </div>
+                <div class="button">
+                    <a href="mailto:csanchezs?Subject=Colaborar%20en%20proyecto%20ENIGMA">Get In Touch</a>
+
+                </div>
+            </div>
+        </div>
+    
+    </section>
+    <!--Fin texto del mensaje-->
+    
+    <!--Inicio de blogs-->
+    <section class="blogs" id="blog">
+        <div class="container">
+            <div class="row">
+                <div class="section-title text-center">
+                    <h1>About Us</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="blogs-content">
+                    <div class="box">
+                        <div class="img">
+                            <img src="{{url_for('static', filename='images/blog/alexander.png')}}" alt="blog">
+                        </div>
+                        <div class="info">
+                            <span>Computer Science - UTEC</span>
+                        </div>
+                        <h3>
+                            Alexander Morales Panitz
+                        </h3>
+                        <p>Founder of Enigma A.I. and QuantumHispano. Self-taught student in Quantum Machine Learning.</p>
+                        <a href="https://www.linkedin.com/in/alexandermoralespanitz/">Read More</a>
+                    </div>
+                    <div class="box">
+                        <div class="img">
+                            <img src="{{url_for('static', filename='images/blog/2.png')}}" alt="blog">
+                        </div>
+                        <div class="info">
+                            <span>Computer Science - 
+                                University National of Engineering
+                            </span>
+                        </div>
+                        <h3>
+                            Cristhian Wiki Sánchez Sauñe
+                        </h3>
+                        <p>Deep Learning Practitioner, and research assistant at UNI. Experience in managing frameworks and deploying models (with Java, C++, Python or Javascript).</p>
+                        <a href="https://www.facebook.com/26HSZK16isTime/">Read More</a>
+                    </div>
+                    <div class="box">
+                        <div class="img">
+                            <img src="{{url_for('static', filename='images/blog/3.png')}}" alt="blog">
+                        </div>
+                        <div class="info">
+                            <span>Electronic Engineering - UNAC</span>
+                        </div>
+                        <h3>
+                            César Atusparia Alhua
+                        </h3>
+                        <p>Electronics student interested in the analysis of medical images in the area of ​​DeepLearning</p>
+                        <a href="https://www.linkedin.com/in/césaratuspariaalhua">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </section>
+    <!--Fin de blogs-->
+    
+    <!-- Inicio Footer-->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="logo">
+                    ENIGMA A.I.
+                </div>
+                <div class="social">
+                    <a href="https://www.instagram.com/enigma_ai/"><i class="fa fa-instagram"></i></a>
+                    <a href="https://github.com/Enigma-A-I/"><i class="fa fa-github"></i></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Fin Footer-->
+    
+    <!--Inicio copyright-->
+    <section class="copyright">
+        <div class="container">
+            <p>&copy; 2020 copyright all right reserved</p>
+        </div>
+    </section>
+    <!--Fin copyright-->
+    
+    
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    
+    
+    </body>
+    </html>
